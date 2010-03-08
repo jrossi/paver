@@ -1,0 +1,8 @@
+include LICENSE.txt
+include README.txt
+include distutils_scripts/*
+recursive-include paver/docs *
+include paver-minilib.zip
+include setup.py
+recursive-include paver/tests *
+include pavement.py
