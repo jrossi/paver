@@ -1,5 +1,6 @@
 import sys
 import os
+import os.path
 import optparse
 import types
 import inspect
@@ -590,11 +591,24 @@ def _launch_pavement(args):
     mod = types.ModuleType("pavement")
     environment.pavement = mod
     
+
+    _cwd = os.getcwd()
+    while _cwd != os.path.dirname(_cwd):
+        print _cwd, os.path.dirname(_cwd)
+        _file = os.path.join(_cwd, environment.pavement_file)
+        if os.path.exists(_file):
+            environment.pavement_file = _file
+            os.chdir(_cwd)
+            break
+        else:
+            _cwd = os.path.dirname(_cwd)
+
     if not os.path.exists(environment.pavement_file):
         environment.pavement_file = None
         exec "from paver.easy import *\n" in mod.__dict__
         _process_commands(args)
         return
+
         
     mod.__file__ = environment.pavement_file
     try:
